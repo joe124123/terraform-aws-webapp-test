@@ -49,3 +49,5 @@ resource "aws_iam_role_policy_attachment" "cloudfront_policy_attachment" {
   policy_arn = aws_iam_policy.cloudfront_s3_access_policy[count.index].arn
 }
 
+# ... other IAM resources as needed
+

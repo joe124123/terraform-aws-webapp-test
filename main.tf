@@ -8,23 +8,37 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"  # Replace with your desired region
+  region = var.region  # Use the environment variable for region
   access_key = "your_access_key"
   secret_key = "your_secret_key"
 }
 
 module "dev_environment" {
   source = "./env/dev"
-  environment = "dev"
+  environment = var.environment  # Pass environment variable to module
+  region = var.region
+  # ... other variables
 }
 
 # module "staging_environment" {
 #   source = "./env/staging"
-#   environment = "staging"
+#   # ... other variables
 # }
 
 # module "prod_environment" {
 #   source = "./env/prod"
-#   environment = "prod"
+#   # ... other variables
 # }
+
+# ... other resources as needed
+
+# Example conditional resource for production environments:
+resource "aws_cloudwatch_log_group" "example" {
+  name = "example-log-group"
+
+  count = var.environment == "prod" ? 1 : 0
+
+  retention_in_days = 30
+  # ... other configuration
+}
 
